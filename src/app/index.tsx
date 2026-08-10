@@ -1,32 +1,35 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 import { router } from "expo-router";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>FAWL</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.logo}>FAWL</Text>
 
-      <Text style={styles.tagline}>
-        From Africa With Love
-      </Text>
+        <Text style={styles.tagline}>
+          From Africa With Love
+        </Text>
 
-      <Text style={styles.heading}>
-        Discover Africa, delivered with love.
-      </Text>
+        <Text style={styles.heading}>
+          Discover Africa, delivered with love.
+        </Text>
+      </View>
 
       <FlatList
         data={products}
-        keyExtractor={( item ) => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ProductCard 
-          product={item} 
-          onPress={() => router.push(`/product/${item.id}`)}
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/product/${item.id}`)}
           />
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -58,4 +61,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#D6C6A5",
   },
+
+  header: {
+  alignItems: "center",
+  marginBottom: 20,
+},
 });

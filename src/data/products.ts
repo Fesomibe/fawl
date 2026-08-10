@@ -7,8 +7,8 @@ export const products: Product[] = [
     description: "Traditional African black soap for everyday skincare.",
     price: 12.99,
     category: "Beauty",
-    image: "",
-    inStock: true,
+    image: require("../../assets/images/products/black-soap.jpg .jpeg"),
+    inStock: false,
   },
   {
     id: "2",
@@ -16,7 +16,7 @@ export const products: Product[] = [
     description: "Colorful tote bag made with African-inspired Ankara fabric.",
     price: 24.99,
     category: "Fashion",
-    image: "",
+    image: require("../../assets/images/products/ankara-tote.jpg .jpeg"),
     inStock: true,
   },
   {
@@ -25,7 +25,7 @@ export const products: Product[] = [
     description: "A flavorful spice blend for preparing delicious jollof rice.",
     price: 8.99,
     category: "Food",
-    image: "",
+    image: require("../../assets/images/products/jollof-spice.jpg .jpeg"),
     inStock: true,
   },
 ];
