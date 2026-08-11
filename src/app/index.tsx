@@ -1,7 +1,7 @@
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 import { router } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -18,6 +18,10 @@ export default function HomeScreen() {
           Discover Africa, delivered with love.
         </Text>
       </View>
+
+      <Pressable onPress={() => router.push("/cart")}>
+        <Text>Cart</Text>
+      </Pressable>
 
       <FlatList
         data={products}
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-  alignItems: "center",
-  marginBottom: 20,
-},
+    alignItems: "center",
+    marginBottom: 20,
+  },
 });

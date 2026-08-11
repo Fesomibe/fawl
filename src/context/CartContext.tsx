@@ -7,8 +7,13 @@ import {
 
 import { Product } from "@/types/product";
 
+type CartItem = {
+    product: Product;
+    quantity: number;
+};
+
 type CartContextType = {
-    cartItems: Product[];
+    cartItems: CartItem[];
     addToCart: (product: Product) => void;
 };
 
@@ -21,13 +26,33 @@ type CartProviderProps = {
 };
 
 export function CartProvider({ children }: CartProviderProps) {
-    const [cartItems, setCartItems] = useState<Product[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
     const addToCart = (product: Product) => {
-        setCartItems((currentItems) => [
-            ...currentItems,
-            product,
-        ]);
+        setCartItems((currentItems) => {
+            const existingItem = currentItems.find(
+                (item) => item.product.id === product.id
+            );
+
+            if (existingItem) {
+                return currentItems.map((item) =>
+                    item.product.id === product.id
+                        ? {
+                            ...item,
+                            quantity: item.quantity + 1,
+                        }
+                        : item
+                );
+            }
+
+            return [
+                ...currentItems,
+                {
+                    product,
+                    quantity: 1,
+                },
+            ];
+        });
     };
 
     return (
