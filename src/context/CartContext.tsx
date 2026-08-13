@@ -15,6 +15,8 @@ type CartItem = {
 type CartContextType = {
     cartItems: CartItem[];
     addToCart: (product: Product) => void;
+    decreaseQuantity: (productId: string) => void;
+
 };
 
 const CartContext = createContext<CartContextType | undefined>(
@@ -45,6 +47,8 @@ export function CartProvider({ children }: CartProviderProps) {
                 );
             }
 
+
+
             return [
                 ...currentItems,
                 {
@@ -55,11 +59,39 @@ export function CartProvider({ children }: CartProviderProps) {
         });
     };
 
+    const decreaseQuantity = (productId: string) => {
+        setCartItems((currentItems) => {
+            const existingItem = currentItems.find(
+                (item) => item.product.id === productId
+            );
+
+            if (!existingItem) {
+                return currentItems;
+            }
+
+            if (existingItem.quantity === 1) {
+                return currentItems.filter(
+                    (item) => item.product.id !== productId
+                );
+            }
+
+            return currentItems.map((item) =>
+                item.product.id === productId
+                    ? {
+                        ...item,
+                        quantity: item.quantity - 1,
+                    }
+                    : item
+            );
+        });
+    };
+
     return (
         <CartContext.Provider
             value={{
                 cartItems,
                 addToCart,
+                decreaseQuantity,
             }}
         >
             {children}

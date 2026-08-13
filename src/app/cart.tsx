@@ -1,8 +1,16 @@
 import { useCart } from "@/context/CartContext";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 export default function CartScreen() {
-    const { cartItems } = useCart();
+    const {
+        cartItems,
+        addToCart,
+        decreaseQuantity,
+    } = useCart();
+
+    const subtotal = cartItems.reduce((total, item) => {
+        return total + item.product.price * item.quantity;
+    }, 0);
 
     return (
         <View>
@@ -14,12 +22,32 @@ export default function CartScreen() {
                 data={cartItems}
                 keyExtractor={(item) => item.product.id}
                 renderItem={({ item }) => (
-                    <>
+                    <View>
                         <Text>{item.product.name}</Text>
-                        <Text>Quantity: {item.quantity}</Text>
-                    </>
+                        <Text>${item.product.price.toFixed(2)}</Text>
+
+                        <View>
+                            <Pressable
+                                onPress={() =>
+                                    decreaseQuantity(item.product.id)
+                                }
+                            >
+                                <Text>-</Text>
+                            </Pressable>
+
+                            <Text>{item.quantity}</Text>
+
+                            <Pressable
+                                onPress={() => addToCart(item.product)}
+                            >
+                                <Text>+</Text>
+                            </Pressable>
+                        </View>
+                    </View>
                 )}
             />
+
+            <Text>Subtotal: ${subtotal.toFixed(2)}</Text>
         </View>
     );
 }
