@@ -1,4 +1,5 @@
 import { useCart } from "@/context/CartContext";
+import { router } from "expo-router";
 import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function CartScreen() {
@@ -6,6 +7,7 @@ export default function CartScreen() {
         cartItems,
         addToCart,
         decreaseQuantity,
+        removeFromCart,
     } = useCart();
 
     const subtotal = cartItems.reduce((total, item) => {
@@ -16,9 +18,34 @@ export default function CartScreen() {
         return total + item.quantity;
     }, 0);
 
+    if (cartItems.length === 0) {
+        return (
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyTitle}>Your Cart</Text>
+
+                <Text style={styles.emptyMessage}>
+                    Your cart is empty.
+                </Text>
+
+                <Text style={styles.emptySubtext}>
+                    Start exploring products you love.
+                </Text>
+
+                <Pressable
+                    style={styles.continueButton}
+                    onPress={() => router.push("/")}
+                >
+                    <Text style={styles.continueButtonText}>
+                        Continue Shopping
+                    </Text>
+                </Pressable>
+            </View>
+        );
+    }
+
     return (
         <View>
-            
+
             <Text>{totalItems} items in your Cart</Text>
 
             <FlatList
@@ -55,6 +82,13 @@ export default function CartScreen() {
                                 </Pressable>
                             </View>
                         </View>
+
+                        <Pressable
+                            onPress={() => removeFromCart(item.product.id)}
+                        >
+                            <Text>Remove</Text>
+                        </Pressable>
+
                     </View>
                 )}
             />
@@ -105,6 +139,42 @@ const styles = StyleSheet.create({
     },
 
     quantityText: {
+        fontSize: 16,
+        fontWeight: "600",
+    },
+
+    emptyContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 24,
+    },
+
+    emptyTitle: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginBottom: 24,
+    },
+
+    emptyMessage: {
+        fontSize: 20,
+        fontWeight: "600",
+        marginBottom: 8,
+    },
+
+    emptySubtext: {
+        fontSize: 16,
+        marginBottom: 24,
+    },
+
+    continueButton: {
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 10,
+        backgroundColor: "#D6C6A5",
+    },
+
+    continueButtonText: {
         fontSize: 16,
         fontWeight: "600",
     },

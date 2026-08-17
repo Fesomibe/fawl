@@ -16,7 +16,7 @@ type CartContextType = {
     cartItems: CartItem[];
     addToCart: (product: Product) => void;
     decreaseQuantity: (productId: string) => void;
-
+    removeFromCart: (productId: string) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(
@@ -86,12 +86,21 @@ export function CartProvider({ children }: CartProviderProps) {
         });
     };
 
+    const removeFromCart = (productId: string) => {
+        setCartItems((currentItems) =>
+            currentItems.filter(
+                (item) => item.product.id !== productId
+            )
+        );
+    };
+
     return (
         <CartContext.Provider
             value={{
                 cartItems,
                 addToCart,
                 decreaseQuantity,
+                removeFromCart,
             }}
         >
             {children}
