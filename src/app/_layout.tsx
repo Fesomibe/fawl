@@ -10,6 +10,7 @@ import { useColorScheme } from "react-native";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { CartProvider } from "@/context/CartContext";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,17 +23,24 @@ export default function RootLayout() {
     >
       <AnimatedSplashOverlay />
       <CartProvider>
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{ headerShown: false }}
-          />
+        <FavoritesProvider>
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
-            name="product/[id]"
-            options={{ title: "Product Details" }}
-          />
-        </Stack>
+            <Stack.Screen
+              name="product/[id]"
+              options={{ title: "Product Details" }}
+            />
+
+            <Stack.Screen
+              name="cart"
+              options={{ title: "Your Cart" }}
+            />
+          </Stack>
+        </FavoritesProvider>
       </CartProvider>
     </ThemeProvider>
   );

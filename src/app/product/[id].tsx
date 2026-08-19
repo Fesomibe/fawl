@@ -2,10 +2,17 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 
 export default function ProductDetailsScreen() {
     const { id } = useLocalSearchParams();
     const { addToCart } = useCart();
+
+    const {
+        favorites,
+        addToFavorites,
+        removeFromFavorites,
+    } = useFavorites();
 
     const product = products.find(
         (product) => product.id === id
@@ -18,6 +25,10 @@ export default function ProductDetailsScreen() {
             </View>
         );
     }
+
+    const isFavorite = favorites.some(
+        (item) => item.id === product.id
+    );
 
     return (
         <View style={styles.container}>
@@ -41,6 +52,21 @@ export default function ProductDetailsScreen() {
             >
                 <Text style={styles.addButtonText}>
                     Add to Cart
+                </Text>
+            </Pressable>
+
+            <Pressable
+                style={styles.favoriteButton}
+                onPress={() =>
+                    isFavorite
+                        ? removeFromFavorites(product.id)
+                        : addToFavorites(product)
+                }
+            >
+                <Text style={styles.favoriteButtonText}>
+                    {isFavorite
+                        ? "♥ Remove from Favorites"
+                        : "♡ Add to Favorites"}
                 </Text>
             </Pressable>
         </View>
@@ -73,6 +99,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 20,
     },
+
     addButton: {
         marginTop: 30,
         padding: 16,
@@ -83,6 +110,20 @@ const styles = StyleSheet.create({
 
     addButtonText: {
         color: "#D6C6A5",
+        fontSize: 16,
+        fontWeight: "600",
+    },
+
+    favoriteButton: {
+        marginTop: 12,
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: "#D6C6A5",
+        alignItems: "center",
+    },
+
+    favoriteButtonText: {
         fontSize: 16,
         fontWeight: "600",
     },
